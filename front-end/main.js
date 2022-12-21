@@ -13,6 +13,18 @@ const socket = io(server);
 
     socket.on('connect', (msg) => {
         socketId = socket.id;
+        socket.emit("register_user", {name:me});
+    });
+
+    socket.on('new_user', (user) => {
+        let userList = document.querySelector(".member-list");
+        let li = document.createElement('li');
+        let userSpan = document.createElement('span');
+        userSpan.classList.add('status');
+        userSpan.classList.add('online');
+        userSpan.innerText = user.name;
+        li.appendChild(userSpan);
+        userList.appendChild(li);
     });
 })()
 
@@ -65,7 +77,8 @@ function addMessageToConversation(sender, time, content) {
 
     let message_time = document.createElement('span');
     message_time.classList.add("msg-time");
-    message_time.innerText = time
+    let date = new Date(time);
+    message_time.innerText = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
     message.appendChild(message_content);
     message.appendChild(message_time);
     

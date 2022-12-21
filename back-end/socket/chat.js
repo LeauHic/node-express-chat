@@ -1,10 +1,15 @@
-module.exports = function (io) {
+const sConnectedUser = require('../models/ConnectedUser');
 
+module.exports = function (io) {
   io.on('connection', (socket) => {
-    console.log(`Connecté au client ${socket.id}`)
-    io.emit('new_user', { type: 'new_user', data: socket.id });
-    
-    io.emit("all", {sender:"DIEU", time:Date.now(), content:"Un nouvel utilisateur est apparu"});
+
+    socket.on("register_user", (user)=>{
+      console.log(user);
+      let newUser = new sConnectedUser({name:user.name, socketId:socket.id})
+      newUser.save();
+      io.emit("new_user", newUser);
+    })
+    console.log(`Connecté au client ${socket.id}`);
 
     // Listener sur la déconnexion
     socket.on('disconnect', () => {

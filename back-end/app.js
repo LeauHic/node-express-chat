@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 
+//const sMainConversation = require('./models/MainConversation.js');
 // export one function that gets called once as the server is being initialized
 module.exports = function (app, server) {
 
@@ -24,7 +25,7 @@ module.exports = function (app, server) {
 
     app.use(function (req, res, next) { req.io = io; next(); });
 
-    app.get('/test', (req, res, next) => {
-        res.status(200).json({ hello: 'world' })
+    app.post('/message', (req, res, next) => {
+        res.status(201).json({ hello: 'world' })
     })
 }

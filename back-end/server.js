@@ -5,8 +5,12 @@ const port = normalizePort(process.env.PORT || '3000');
 
 app.set('port', port);
 
+
 // load app.js and let it do it's part of the initialization of app and server
 require('./app.js')(app, server);
+
+// instanciate the db connection
+require('./dbConnection')();
 
 server.listen(port);
 server.on('error', onError);
@@ -49,11 +53,9 @@ function onError(error) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
       process.exit(1);
-      break;
     case 'EADDRINUSE':
       console.error(bind + ' is already in use');
       process.exit(1);
-      break;
     default:
       throw error;
   }
